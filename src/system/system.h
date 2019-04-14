@@ -1,8 +1,9 @@
 #pragma once
 
 
-#include "stm32f30x_rcc.h"
+
 #include "platform.h"
+#include "encoder.h"
 
 struct WaitData /// static WaitData wd1 = {sys.time_now(), 500}
 {
@@ -25,6 +26,13 @@ public:
 
     static uint32_t sys_time_ms;
 
+    static float get_rotor_position();
+
+    static void start_control_loop();
+
+    static void control_loop();
+
+
 private:
 
     System() = default;
@@ -32,6 +40,8 @@ private:
     ~System() = default;
 
     static Platform _platform;
+
+    static Encoder _encoder;
 
 
 };

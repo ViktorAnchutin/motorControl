@@ -1,12 +1,14 @@
 #include "system.h"
 
+
 uint32_t System::sys_time_ms;
 Platform System::_platform;
+Encoder System::_encoder;
 
 void System::init()
 {
-    _platform.systick_timer_init();
-    _platform.led_init();
+    _platform.init();
+    _encoder.init_interface();
 
 }
 
@@ -35,9 +37,30 @@ void System::led_toggle()
 void System::toggle_led_periodically(uint32_t period_ms)
 {
     static WaitData wd{sys_time_ms, period_ms};
-    if( non_blocking_wait_ms(&wd) ) led_toggle();
+    if( non_blocking_wait_ms(&wd) )
+    {
+      led_toggle();
+    }
 }
 
+
+
+float System::get_rotor_position()
+{
+    return _encoder.get_angle();
+}
+
+
+void System::start_control_loop()
+{
+    _platform.control_loop_timer_init();
+}
+
+float debug_angle;
+void System::control_loop()
+{
+     debug_angle = get_rotor_position();
+}
 
 
 
@@ -47,6 +70,18 @@ void System::toggle_led_periodically(uint32_t period_ms)
 extern "C" void SysTick_Handler()
 {
     System::sys_time_ms++;
+}
+
+
+extern "C" void TIM3_IRQHandler()
+{
+
+    if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET) {
+
+			TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
+
+            System::control_loop();
+    }
 }
 
 

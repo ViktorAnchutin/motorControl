@@ -3,3 +3,4 @@
 *.elf
 *.map
 *.depend
+*.elay

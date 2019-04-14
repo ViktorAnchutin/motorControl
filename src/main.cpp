@@ -12,14 +12,16 @@
 
 **********************************************************************/
 #include "stm32f30x_conf.h"
-#include "./system/system.h"
+#include "system.h"
 
 
 
 
 int main(void)
 {
-    System::init();
+  System::init();
+
+  System::start_control_loop();
 
   while(1)
   {
