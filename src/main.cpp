@@ -12,22 +12,20 @@
 
 **********************************************************************/
 #include "stm32f30x_conf.h"
-#include "system.h"
+#include "./system/system.h"
 
 
 
 
 int main(void)
 {
-
-     System sys;
-
+    System::init();
 
   while(1)
   {
-    sys.toggle_led_periodically(500);
-
+    System::toggle_led_periodically(500);
   }
+
 }
 
 

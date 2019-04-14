@@ -14,23 +14,24 @@ struct WaitData /// static WaitData wd1 = {sys.time_now(), 500}
 class System
 {
 public:
-    System();
 
-    bool non_blocking_wait_ms(WaitData* wait_data);
+    static void init();
 
-    void led_toggle();
+    static bool non_blocking_wait_ms(WaitData* wait_data);
 
-    void toggle_led_periodically(uint32_t period_ms);
+    static void led_toggle();
+
+    static void toggle_led_periodically(uint32_t period_ms);
 
     static uint32_t sys_time_ms;
 
-     ~System();
-
-
-
 private:
 
-    Platform _platform;
+    System() = default;
+
+    ~System() = default;
+
+    static Platform _platform;
 
 
 };

@@ -32,6 +32,7 @@
 					<Add option="-Wa,--gdwarf-2" />
 				</Assembler>
 				<Linker>
+					<Add option="-lstdc++" />
 					<Add option="-Wl,--gc-sections" />
 					<Add option="-lm" />
 					<Add library="CMSIS_5\Lib\GCC\libarm_cortexM4lf_math.a" />
@@ -112,7 +113,6 @@
 		<Unit filename="inc\stm32f30x.h" />
 		<Unit filename="inc\stm32f30x_conf.h" />
 		<Unit filename="inc\system_stm32f30x.h" />
-		<Unit filename="readme.txt" />
 		<Unit filename="SPL\inc\stm32f30x_adc.h" />
 		<Unit filename="SPL\inc\stm32f30x_can.h" />
 		<Unit filename="SPL\inc\stm32f30x_comp.h" />
@@ -231,7 +231,7 @@
 		<Extensions>
 			<code_completion />
 			<debugger>
-				<target_debugging_settings target="Release" active_interface="ST-link">
+				<target_debugging_settings target="Debug" active_interface="ST-link">
 					<debug_interface interface_id="ST-link" ip_address="localhost" ip_port="4242" path="${EMBITZ}\share\contrib" executable="STLinkGDB.exe" description="" dont_start_server="false" backoff_time="1000" options="0" reg_filter="0" active_family="STMicroelectronics" gdb_before_conn="" gdb_after_conn="">
 						<family_options family_id="STMicroelectronics">
 							<option opt_id="ID_JTAG_SWD" opt_value="swd" />
@@ -248,7 +248,7 @@
 						</family_options>
 					</debug_interface>
 				</target_debugging_settings>
-				<target_debugging_settings target="Debug" active_interface="ST-link">
+				<target_debugging_settings target="Release" active_interface="ST-link">
 					<debug_interface interface_id="ST-link" ip_address="localhost" ip_port="4242" path="${EMBITZ}\share\contrib" executable="STLinkGDB.exe" description="" dont_start_server="false" backoff_time="1000" options="0" reg_filter="0" active_family="STMicroelectronics" gdb_before_conn="" gdb_after_conn="">
 						<family_options family_id="STMicroelectronics">
 							<option opt_id="ID_JTAG_SWD" opt_value="swd" />
