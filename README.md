@@ -1,2 +1,2 @@
 # motorControl
-BLDC motor control project written in C++
+BLDC motor control project written in C++ (in process...)
