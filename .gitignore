@@ -4,4 +4,4 @@
 *.map
 *.depend
 *.elay
-CMSIS_5/
+motorControl/CMSIS_5/
