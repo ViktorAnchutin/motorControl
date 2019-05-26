@@ -5,3 +5,5 @@
 *.depend
 *.elay
 motorControl/CMSIS_5/
+motorControl/SPL/
+motorControl/biuld
