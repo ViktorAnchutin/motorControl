@@ -4,3 +4,4 @@
 *.map
 *.depend
 *.elay
+CMSIS5/*
