@@ -9,11 +9,13 @@
 void MotorControl::computeVoltageVector(float rotorPosition, float vectorAmplitude, float* voltageVector)
 {
 
+    /// Compute d-q axis position
     /// compute the electric angle of the rotor with respect to the initial position. Initial position theoretically represents q axis alignment with an A stator axis.
     float theta_elec_degrees = ((rotorPosition - _initialRotorPosition)*_polePairs + 90 ); // 11 - pole pairs (22P). + 90 because at initial position theta = 90
 	float theta = theta_elec_degrees*M_PI/180;//Pi/180; // translating into radians
 
 
+    /// Compute phase voltages
     /// compute a projection of the voltage vector in the q axis onto the stator's axis
     float Va_1 = arm_cos_f32(theta);//cos(theta         );
 	float Vb_1 = arm_cos_f32(theta - 2*M_PI/3);//cos(theta - 2.0943951023931954923084289221863 /* 2*Pi/3 */);
@@ -24,6 +26,7 @@ void MotorControl::computeVoltageVector(float rotorPosition, float vectorAmplitu
 	float Vc = Vc_1 * vectorAmplitude; // projection calculation of Vq into C phase
 
 
+	/// Compute invertor voltages
 	/// Obtaining value for invertor, +50 because Vinv relates with V_phase as Vinv = Vphase + Vdc/2 in order to avoid negative values for invertor voltage. Vinv value should be 0-100%
 	/// should also be taken into account that Vphase(max) = Vdc/2 (using sinusoidal commutation)
 	float Vinv1 = Va/2 + 50;
