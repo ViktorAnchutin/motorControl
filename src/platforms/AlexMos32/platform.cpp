@@ -39,6 +39,7 @@ void Platform::init()
 {
     led_init();
     systick_timer_init();
+    _motorDriver_1.init();
 
 }
 
@@ -70,6 +71,15 @@ void Platform::control_loop_timer_init()
     NVIC_EnableIRQ(TIM3_IRQn);
 
 }
+
+
+void Platform::setVoltageVector(float* voltageVector)
+{
+    TIM1->CCR1 = (uint32_t)(voltageVector[0]*PWM_period/100)  ;
+    TIM1->CCR2 = (uint32_t)(voltageVector[1]*PWM_period/100)  ;
+    TIM1->CCR3 = (uint32_t)(voltageVector[2]*PWM_period/100)  ;
+}
+
 
 
 

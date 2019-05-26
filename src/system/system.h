@@ -1,15 +1,24 @@
-#pragma once
+#ifndef SYSTEM_H
+#define SYSTEM_H
 
 
-
+#include "motor_control.h"
 #include "platform.h"
 #include "encoder.h"
 
-struct WaitData /// static WaitData wd1 = {sys.time_now(), 500}
+
+/**
+    Structure is used for non blocking delay function.
+*/
+
+struct WaitData
 {
     uint32_t start_time;
     uint32_t wait_time;
 };
+
+
+
 
 
 class System
@@ -19,6 +28,8 @@ public:
     static void init();
 
     static bool non_blocking_wait_ms(WaitData* wait_data);
+
+    static void blockingDelayMs(uint32_t DelayMs);
 
     static void led_toggle();
 
@@ -32,6 +43,10 @@ public:
 
     static void control_loop();
 
+    static void setDesiredRotorPosition();
+
+    static void setDesiredRotorPosition(float desPosition);
+
 
 private:
 
@@ -43,5 +58,16 @@ private:
 
     static Encoder _encoder;
 
+    static MotorControl _motorControl;
+
+    static PID_Controller _pidController;
+
+    static float _desiredRotorPosition;
+
+    static void _initEncoderRelativePosition();
 
 };
+
+
+
+#endif //SYSTEM_H

@@ -1,15 +1,46 @@
 #include "system.h"
 
 
+
+/*
+    Static variables.
+*/
+
 uint32_t System::sys_time_ms;
 Platform System::_platform;
 Encoder System::_encoder;
+MotorControl System::_motorControl;
+float System::_desiredRotorPosition;
+PID_Controller System::_pidController;
+
+
+
+/**
+    Gets the encoder's relative position to the rotor.
+    It is required to compute rotor's d-q axis position in the run time.
+*/
+
+void System::_initEncoderRelativePosition()
+{
+     /// get voltage vector to set the motor in the initial position
+    float voltageVector[3] = {0};
+    _motorControl.getInitVector(voltageVector);
+    /// set motor in the initial position to measure the rotor's position
+    _platform.setVoltageVector(voltageVector);
+    blockingDelayMs(1000);
+    _motorControl.setInitialMotorPositionValue(get_rotor_position());
+}
+
+
+
 
 void System::init()
 {
     _platform.init();
     _encoder.init_interface();
-
+    _motorControl.setPolePairs(11);
+    _pidController.setKp(5);
+    _initEncoderRelativePosition();
 }
 
 
@@ -51,15 +82,23 @@ float System::get_rotor_position()
 }
 
 
+/**
+    Start control loop timer.
+*/
+
 void System::start_control_loop()
 {
     _platform.control_loop_timer_init();
 }
 
-float debug_angle;
+
 void System::control_loop()
 {
-     debug_angle = get_rotor_position();
+     float rotorPosition = get_rotor_position();
+     float vectorAmplitude = _pidController.computeControlSignal(_desiredRotorPosition, rotorPosition); /// Use PID controller to compute a control signal
+     float voltageVector[3] = {0};
+     _motorControl.computeVoltageVector(rotorPosition, vectorAmplitude, voltageVector); /// compute the voltage vector based on the rotor's position
+     _platform.setVoltageVector(voltageVector); /// set PWM
 }
 
 
@@ -73,6 +112,8 @@ extern "C" void SysTick_Handler()
 }
 
 
+
+/// control loop interrupt handler
 extern "C" void TIM3_IRQHandler()
 {
 
@@ -82,6 +123,22 @@ extern "C" void TIM3_IRQHandler()
 
             System::control_loop();
     }
+}
+
+
+void System::blockingDelayMs(uint32_t DelayMs)
+{
+    uint32_t startTime = sys_time_ms;
+    while(sys_time_ms - startTime < DelayMs)
+    {
+
+    }
+}
+
+
+void System::setDesiredRotorPosition(float desPosition)
+{
+    _desiredRotorPosition = desPosition;
 }
 
 
