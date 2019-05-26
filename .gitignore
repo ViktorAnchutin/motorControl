@@ -6,4 +6,5 @@
 *.elay
 motorControl/CMSIS_5/
 motorControl/SPL/
-motorControl/biuld
+motorControl/build/
+motorControl/inc/
